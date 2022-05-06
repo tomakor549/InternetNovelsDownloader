@@ -1,0 +1,17 @@
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\bin\Debug\net6.0\WebsiteNovelsDownloader.exe
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\bin\Debug\net6.0\WebsiteNovelsDownloader.deps.json
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\bin\Debug\net6.0\WebsiteNovelsDownloader.runtimeconfig.json
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\bin\Debug\net6.0\WebsiteNovelsDownloader.dll
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\bin\Debug\net6.0\WebsiteNovelsDownloader.pdb
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\bin\Debug\net6.0\HtmlAgilityPack.dll
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\obj\Debug\net6.0\WebsiteNovelsDownloader.csproj.AssemblyReference.cache
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\obj\Debug\net6.0\WebsiteNovelsDownloader.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\obj\Debug\net6.0\WebsiteNovelsDownloader.AssemblyInfoInputs.cache
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\obj\Debug\net6.0\WebsiteNovelsDownloader.AssemblyInfo.cs
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\obj\Debug\net6.0\WebsiteNovelsDownloader.csproj.CoreCompileInputs.cache
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\obj\Debug\net6.0\WebsiteNovelsDownloader.csproj.CopyComplete
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\obj\Debug\net6.0\WebsiteNovelsDownloader.dll
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\obj\Debug\net6.0\refint\WebsiteNovelsDownloader.dll
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\obj\Debug\net6.0\WebsiteNovelsDownloader.pdb
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\obj\Debug\net6.0\WebsiteNovelsDownloader.genruntimeconfig.cache
+C:\Users\venet\source\repos\WebsiteNovelsDownloader\WebsiteNovelsDownloader\obj\Debug\net6.0\ref\WebsiteNovelsDownloader.dll
