@@ -1,79 +1,119 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using HtmlAgilityPack;
 using WebsiteNovelsDownloader.Models;
 
 namespace WebsiteNovelsDownloader.Downloaders
 {
-    internal class Downloader
+    internal static class Downloader
     {
-        protected HtmlDocument _document = new();
-
-        protected string _url;
-
-        protected List<string> _rules;
-
-        public Downloader(string url, List<string> rules)
+        public static string? NextUrlByHyperlink(HtmlDocument websiteContent, List<Rules> parentNodeRules, HyperlinkRules linkRules)
         {
-            Uri uriResult;
-            if (!Uri.TryCreate(url, UriKind.Absolute, out uriResult!) || uriResult.Scheme != Uri.UriSchemeHttps)
-                throw new ArgumentException("The given url is not a link");
-            _url = url;
-            _rules = rules;
+            var parentNode = Extract(websiteContent, parentNodeRules);
+            if(parentNode == null)
+            {
+                return null;
+            }
+
+            foreach (var hyperlink in parentNode.SelectNodes(linkRules.AttributeRule()))
+            {
+                if (hyperlink.InnerText == linkRules.TextValue)
+                    return hyperlink.Attributes["href"].Value;
+            }
+
+            return null;
         }
 
-        protected async Task getMessage(string url)
+        public static Chapter CreateChapter(HtmlDocument websiteContent, int chapterNumber, List<Rules> extractRules)
+        {
+            Console.WriteLine("Downloader.CreateChapterAsync()");
+            var extractNode = Extract(websiteContent, extractRules);
+
+            return new Chapter()
+            {
+                Number = chapterNumber,
+                Content = extractNode,
+            };
+        }
+
+        private static HtmlNode? Extract(HtmlDocument websiteContent, List<Rules> rules)
+        {
+            HtmlNodeCollection? nodes;
+            foreach(var rule in rules)
+            {
+                var ruleString = rule.ContainsRule();
+                nodes = websiteContent.DocumentNode.SelectNodes(ruleString);
+                if (nodes != null)
+                {
+                    if (nodes.Count == 1)
+                    {
+                        return nodes.LastOrDefault();
+                    }
+                }
+            }
+            return null;
+        }
+
+        public static async Task<HtmlDocument?> WebsiteContentAsync(string url)
+        {
+            Console.WriteLine("Downloader.getMessage(): download with " + url);
+
+            if (!ValidateUrl(url))
+            {
+                Console.WriteLine("Downloader.getMessage(): The given argument is not a link.");
+                //throw new ArgumentException("Downloader.getMessage(): The given argument is not a link.");
+                return null;
+            }
+
+            try
+            {
+                HttpClient client = new HttpClient();
+                HttpResponseMessage response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                HtmlDocument document = new();
+                document.LoadHtml(responseBody);
+                return document;
+            }
+            catch (HttpRequestException)
+            {
+                Console.WriteLine("Downloader.getMessage(): You cannot download the content from the link ");
+                return null;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Downloader.getMessage(): Exception " + ex.Message);
+                return null;
+            }
+        }
+
+        public static string? ChapterToString(Chapter chapter)
+        {
+            if (chapter.Content == null)
+            {
+                return null;
+            }
+            return $"<h2>Rozdział {chapter.Number}</h2>\n" + chapter.Content.OuterHtml;
+        }
+
+        public static bool ValidateUrl(string url)
         {
             Uri uriResult;
             bool create = Uri.TryCreate(url, UriKind.Absolute, out uriResult!);
             bool scheme = uriResult.Scheme != Uri.UriSchemeHttp;
+
             if (!create || !scheme)
-                throw new ArgumentException("The given argument is not a link.");
-
-            HttpClient client = new HttpClient();
-            string responseBody = "";
-            try
             {
-                HttpResponseMessage response = await client.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                responseBody = await response.Content.ReadAsStringAsync();
+                return false;
             }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-
-            _document.LoadHtml(responseBody);
-        }
-
-        protected Chapter getChapterByClass(List<string> rules, int chapterNumber)
-        {
-            HtmlNodeCollection? nodes = null;
-            foreach (string rule in rules)
-            {
-                nodes = _document.DocumentNode.SelectNodes(rule);
-                if (nodes?.Count > 0)
-                {
-                    if (nodes.Count > 1)
-                        throw new ArgumentException("This class name is more than one.");
-                }
-            }
-
-            if (nodes == null)
-                throw new ArgumentException("there are no such classes");
-
-            var node = nodes[0];
-
-            //if (!IsClearChapterActive)
-                return new Chapter()
-                {
-                    Number = chapterNumber,
-                    Content = node.OuterHtml,
-                };
+            return true;
         }
     }
 }

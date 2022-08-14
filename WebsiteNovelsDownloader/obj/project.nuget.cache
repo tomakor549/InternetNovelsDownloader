@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Lse1rEA2CyArdySUuJXQVMRrB1sfTFKyz7GR1MoPbopxfcGne1GZUD4+pOTatQKCwVi+HAD7DRSJWE459XWSqQ==",
+  "dgSpecHash": "QeEC1HABQ2Ml/hSvBVLVrqVEePPi93hGHjmEcuZDo3E6DGxDL25L53rMCnhn+yg3zDznLpnmH8OWrtDhD3J34A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\venet\\source\\repos\\WebsiteNovelsDownloader\\WebsiteNovelsDownloader\\WebsiteNovelsDownloader.csproj",
+  "projectFilePath": "D:\\Projects\\InternetNovelsDownloader\\WebsiteNovelsDownloader\\WebsiteNovelsDownloader.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\venet\\.nuget\\packages\\htmlagilitypack\\1.11.42\\htmlagilitypack.1.11.42.nupkg.sha512"
   ],
