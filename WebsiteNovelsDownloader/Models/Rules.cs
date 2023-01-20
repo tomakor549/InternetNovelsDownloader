@@ -62,6 +62,11 @@ namespace WebsiteNovelsDownloader.Models
         public string Manifest() => $"//{Name}/item[@{Attribute}='{AttributeValue}']";
     }
 
+    public class ArticleRules : Rules
+    {
+        public ArticleRules(Attribute attribute, string attributeValue) : base(attribute, attributeValue, "article") { }
+    }
+
     public class DivRules : Rules
     {
         public DivRules(Attribute attribute, string attributeValue) : base(attribute, attributeValue, "div") { }
@@ -69,16 +74,16 @@ namespace WebsiteNovelsDownloader.Models
 
     public class HyperlinkRules : Rules
     {
-        public string TextValue { get; private set; }
-        public HyperlinkRules(Attribute attribute, string textValue) : base(attribute, "a")
-        {
-            TextValue = textValue;
+        public string? TextValue { get; private set; }
+
+        public HyperlinkRules(Attribute attribute, string attributeValue, string? textValue = null) : base(attribute, attributeValue, "a") {
+        TextValue = textValue;
         }
     }
 
     public class ManifestRules : Rules
     {
-        public ManifestRules(Attribute attribute, string attributeValue) : base(attribute, "manifest") { }
+        public ManifestRules(Attribute attribute, string attributeValue) : base(attribute, attributeValue, "manifest") { }
     }
 
     public enum Attribute

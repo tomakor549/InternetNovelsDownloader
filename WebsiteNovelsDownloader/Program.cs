@@ -3,21 +3,33 @@ using WebsiteNovelsDownloader.Downloaders;
 using System;
 using WebsiteNovelsDownloader.Models;
 using Attribute = WebsiteNovelsDownloader.Models.Attribute;
+using System.Net;
 
-var url = "https://singletranslations.blogspot.com/2021/11/adaa-chapter-30.html";
-int chaptersCount = 30;
+var title = "Hard Carry Support";
+int actualChapter = 1;
+var url = $@"https://reaperscans.com/novels/9881-hard-carry-support/chapters/19880403-chapter-1";
+int finalChapter = 150;
+//prose dark:prose-invert max-w-none my-4
 var extractRules = new List<Rules>
     {
-        new DivRules(Attribute.Id, "post-body"),
+        new ArticleRules(Attribute.Class, "my-4"),
+        new ArticleRules(Attribute.Class, "max-w-none"),
+        new ArticleRules(Attribute.Class, "prose-invert"),
+        //new ArticleRules(Attribute.Class, "category-tcf"),
     };
-var nextUrlRule = new HyperlinkRules(Attribute.Href, "Next&gt;");
-var novelName = "AADA.html";
 
-var chapters = new List<DownloadChapter>();
+
+var hrefExtractRules = new List<Rules>
+    {
+       new DivRules(Attribute.Class, "mb-2"),
+    };
+var nextUrlRule = new HyperlinkRules(Attribute.Class, "ml-2");
+var novelName = $"{title} {actualChapter}-{finalChapter}.html";
 
 File.Create(novelName).Dispose();
-while (chaptersCount < 100)
+while (actualChapter <= finalChapter)
 {
+    Console.WriteLine("Chapter " + actualChapter);
     if (url == null)
     {
         throw new Exception("Url is null");
@@ -28,17 +40,12 @@ while (chaptersCount < 100)
         throw new Exception("Content is null");
     }
 
-    if (websiteContent == null)
-    {
-        return;
-    }
-
     File.AppendAllText(
         novelName,
-        Downloader.ChapterToString(Downloader.CreateChapter(websiteContent, chaptersCount, extractRules))
+        Downloader.ChapterToString(Downloader.CreateChapter(websiteContent, actualChapter, extractRules))
     );
-    url = Downloader.NextUrlByHyperlink(websiteContent, extractRules, nextUrlRule);
-    chaptersCount++;
+    url = Downloader.NextUrlByHyperlink(websiteContent, nextUrlRule);
+    actualChapter++;
 }
 
 

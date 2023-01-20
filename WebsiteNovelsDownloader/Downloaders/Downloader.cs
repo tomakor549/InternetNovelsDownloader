@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +31,16 @@ namespace WebsiteNovelsDownloader.Downloaders
             return null;
         }
 
+        public static string? NextUrlByHyperlink(HtmlDocument websiteContent, HyperlinkRules linkRules)
+        {
+            HtmlNode? node = Extract(websiteContent, linkRules);
+            if (node == null)
+            {
+                return null;
+            }
+            return node.Attributes["href"].Value;
+        }
+
         public static Chapter CreateChapter(HtmlDocument websiteContent, int chapterNumber, List<Rules> extractRules)
         {
             Console.WriteLine("Downloader.CreateChapterAsync()");
@@ -50,10 +62,25 @@ namespace WebsiteNovelsDownloader.Downloaders
                 nodes = websiteContent.DocumentNode.SelectNodes(ruleString);
                 if (nodes != null)
                 {
-                    if (nodes.Count == 1)
+                    if (nodes.Count >= 1)
                     {
                         return nodes.LastOrDefault();
                     }
+                }
+            }
+            return null;
+        }
+
+        private static HtmlNode? Extract(HtmlDocument websiteContent, Rules rule)
+        {
+            HtmlNodeCollection? nodes;
+            var ruleString = rule.ContainsRule();
+            nodes = websiteContent.DocumentNode.SelectNodes(ruleString);
+            if (nodes != null)
+            {
+                if (nodes.Count >= 1)
+                {
+                    return nodes.LastOrDefault();
                 }
             }
             return null;
@@ -73,6 +100,7 @@ namespace WebsiteNovelsDownloader.Downloaders
             try
             {
                 HttpClient client = new HttpClient();
+                client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.55");
                 HttpResponseMessage response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
@@ -114,6 +142,13 @@ namespace WebsiteNovelsDownloader.Downloaders
                 return false;
             }
             return true;
+        }
+
+        public static void ClearString(string content, string start, string end)
+        {
+            int startIndex = content.IndexOf(start);
+            int endIndex = content.IndexOf(end);
+           // return content.Remove(startIndex, endIndex-startIndex);
         }
     }
 }
